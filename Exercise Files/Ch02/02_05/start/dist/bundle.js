@@ -9,5 +9,5 @@ render(React.createElement(
 	{ id: 'title',
 		className: 'header',
 		style: { backgroundColor: 'orange', color: 'white', fontFamily: 'verdana' } },
-	'Hello World'
+	'What is upppp, World'
 ), document.getElementById('react-container'));
