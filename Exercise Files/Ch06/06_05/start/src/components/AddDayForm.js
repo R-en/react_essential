@@ -1,27 +1,51 @@
-import { PropTypes } from 'react'
+import { PropTypes, Component } from 'react'
 
 const tahoeResorts = [
 	"Alpine Meadows",
 	"Boreal",
 	"Diamond Peak",
-	"Donner Ski Ranch", 
-	"Heavenly", 
+	"Donner Ski Ranch",
+	"Heavenly",
 	"Homewood",
 	"Kirkwood",
-	"Mt. Rose", 
+	"Mt. Rose",
 	"Northstar",
 	"Squaw Valley",
 	"Sugar Bowl"
 ]
 
-export const AddDayForm = ({ resort, 
-							 date, 
-							 powder, 
+class Autocomplete extends Component {
+
+	get value() {
+		return this.refs.inputResort.value
+	}
+
+	set value(inputValue) {
+		this.refs.inputResort.value = inputValue
+	}
+
+	render() {
+		return (
+			<div>
+				<input ref= "inputResort" type="string" list="tahoe-resort" />
+				<datalist id="tahoe-resort">
+				{this.props.options.map(
+					(opt,i)=> <option key={i}>{opt}</option>
+				)}
+				</datalist>
+			</div>
+		)
+	}
+}
+
+export const AddDayForm = ({ resort,
+							 date,
+							 powder,
 							 backcountry,
 							 onNewDay }) => {
-	
+
 	let _resort, _date, _powder, _backcountry
-	
+
 	const submit = (e) => {
 		e.preventDefault()
 		onNewDay({
@@ -41,32 +65,29 @@ export const AddDayForm = ({ resort,
 		<form onSubmit={submit} className="add-day-form">
 
 			<label htmlFor="resort">Resort Name</label>
-			<input id="resort" 
-				   type="text" 
-				   required 
-				   defaultValue={resort}
+			<Autocomplete options={tahoeResorts}
 				   ref={input => _resort = input}/>
 
 			<label htmlFor="date">Date</label>
-			<input id="date" 
-				   type="date" 
-				   required 
+			<input id="date"
+				   type="date"
+				   required
 				   defaultValue={date}
 				   ref={input => _date = input}/>
 
 			<div>
-				<input id="powder" 
-					   type="checkbox" 
-					   defaultChecked={powder}	
+				<input id="powder"
+					   type="checkbox"
+					   defaultChecked={powder}
 					   ref="powder"
 					   ref={input => _powder = input}/>
 				<label htmlFor="powder">Powder Day</label>
 			</div>
 
-			<div>	
-				<input id="backcountry" 
+			<div>
+				<input id="backcountry"
 					   type="checkbox"
-					   defaultChecked={backcountry} 
+					   defaultChecked={backcountry}
 					   ref="backcountry"
 					   ref={input => _backcountry = input}/>
 				<label htmlFor="backcountry">
