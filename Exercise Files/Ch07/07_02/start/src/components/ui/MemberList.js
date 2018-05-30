@@ -26,12 +26,19 @@ class MemberList extends Component {
     }
 
     render() {
+      const {members} = this.state
         return (
             <div className="member-list">
             	<h1>Society Members</h1>
+              {members.map(
+                (data,i) =>
+                      <Member key={i}
+                              onClick= {email => console.log(email)}
+                {...data} />
+              )}
             </div>
-        )    
-   }     
+        )
+   }
 }
 
 export default MemberList

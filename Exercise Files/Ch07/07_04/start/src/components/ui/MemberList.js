@@ -8,8 +8,12 @@ class MemberList extends Component {
         super(props)
         this.state = {
             members: [],
-            loading: false
+            loading: false,
+            administrators:[]
         }
+
+        this.makeAdmin=this.makeAdmin.bind(this)
+        this.removeAdmin=this.removeAdmin.bind(this)
     }
 
     componentDidMount() {
@@ -19,8 +23,25 @@ class MemberList extends Component {
             .then(json => json.results)
             .then(members => this.setState({
                 members,
-                loading: false
+                loading: false,
+                administrators:[]
             }))
+    }
+
+    makeAdmin(email){
+      const administrators = [
+        ...this.state.administrators,
+        email
+      ]
+      this.setState({administrators})
+    }
+
+    removeAdmin(email){
+      const administrators=this.state.administrators.filter(
+        adminEmail => adminEmail !== email
+      )
+
+      this.setState({administrators})
     }
 
     render() {
@@ -36,11 +57,16 @@ class MemberList extends Component {
 
                 {(members.length) ?
                    members.map(
-                	(member, i) => 
-                		<Member key={i} 
-                                name={member.name.first + ' ' + member.name.last} 
+                	(member, i) =>
+                		<Member key={i}
+                                admin={this.state.administrators.some(
+                                  adminEmail => adminEmail === member.email
+                                )}
+                                name={member.name.first + ' ' + member.name.last}
                                 email={member.email}
-                                thumbnail={member.picture.thumbnail}/>
+                                thumbnail={member.picture.thumbnail}
+                                makeAdmin={this.makeAdmin}
+                                removeAdmin={this.removeAdmin}/>
                 	 ):
                    <span>Currently 0 Members </span>
                }
